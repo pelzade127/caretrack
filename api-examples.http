@@ -1,0 +1,74 @@
+### CareTrack API examples
+### Run with the VS Code "REST Client" extension or IntelliJ's HTTP client.
+### Start the backend first (cd backend && ./mvnw spring-boot:run).
+### Replace CT-XXXXXX with the referenceNumber returned by "Create a request".
+
+@base = http://localhost:8080
+
+### ---------------------------------------------------------------- customer
+
+### Create a request (201 Created + Location header)
+POST {{base}}/api/customer/requests
+Content-Type: application/json
+
+{
+  "customerName": "Jordan Rivera",
+  "category": "SERVICE_ISSUE",
+  "subject": "No signal after software update",
+  "description": "Since installing this morning's update the phone shows 'No service' everywhere."
+}
+
+### List the demo customer's requests (most recently updated first)
+GET {{base}}/api/customer/requests
+
+### Get one request with its history (seed data example)
+GET {{base}}/api/customer/requests/CT-100002
+
+### Add a customer message (201; status does NOT change)
+POST {{base}}/api/customer/requests/CT-100002/messages
+Content-Type: application/json
+
+{ "message": "It's a Nimbus X2 and restarting didn't help." }
+
+### ---------------------------------------------------------------- agent
+
+### List all requests, optionally filtered
+GET {{base}}/api/agent/requests?status=IN_PROGRESS&category=BILLING
+
+### Get any request (agent can see every customer's requests)
+GET {{base}}/api/agent/requests/CT-100005
+
+### Customer-visible update (201; status does NOT change)
+POST {{base}}/api/agent/requests/CT-100002/updates
+Content-Type: application/json
+
+{ "message": "Thanks. We've asked the network team to check the nearest site." }
+
+### Change status (201). WAITING_ON_CUSTOMER -> IN_PROGRESS is allowed.
+POST {{base}}/api/agent/requests/CT-100002/status-changes
+Content-Type: application/json
+
+{ "newStatus": "IN_PROGRESS", "explanation": "Customer replied with device details." }
+
+### ---------------------------------------------------------------- errors
+
+### 409 Conflict: OPEN -> RESOLVED skips a step (CT-100003 is OPEN in seed data)
+POST {{base}}/api/agent/requests/CT-100003/status-changes
+Content-Type: application/json
+
+{ "newStatus": "RESOLVED", "explanation": "Trying to skip ahead." }
+
+### 400 Bad Request: whitespace-only subject, missing category
+POST {{base}}/api/customer/requests
+Content-Type: application/json
+
+{ "customerName": "Jordan", "subject": "   ", "description": "Too short" }
+
+### 400 Bad Request: unknown filter value
+GET {{base}}/api/agent/requests?status=DONE
+
+### 404 Not Found: unknown reference
+GET {{base}}/api/customer/requests/CT-ZZZZZZ
+
+### 404 Not Found: a real request that belongs to a different (non-demo) customer
+GET {{base}}/api/customer/requests/CT-100004
