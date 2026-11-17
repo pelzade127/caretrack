@@ -318,12 +318,12 @@ Don't deploy it publicly as-is, and never put real customer data in it.
 
 ## Verification status
 
-What was checked while this project was generated (November 2026), and what wasn't:
+What has been checked so far (November 2026), and what has not:
 
 - ✅ **Frontend:** `npm run build` (strict TypeScript type-check + Vite production build) passes.
 - ✅ **UI:** the frontend was exercised in a headless browser at desktop and phone widths: submit with validation errors, successful create, customer message, filters and empty state, status change, keyboard focus, no horizontal scrolling on mobile, no console errors. **The API behind it was a temporary stand-in** that imitates the documented contract.
-- ⚠️ **Backend: not compiled or tested with real dependencies.** The generation environment's network policy blocked Maven Central, so Spring Boot couldn't be downloaded. As partial checks, all main source files compiled with `javac` against hand-written API stubs, and the seed data, transition rules and service logic were run in a small plain-Java harness with an in-memory fake repository. The unit test classes compiled against JUnit/Mockito stubs.
-- **First thing to do:** run `./mvnw test`, then the app and `./scripts/api-demo.sh`. Fix anything that fails, then update this section with what you saw.
+- ✅ **Backend:** `./mvnw test` passes in GitHub Actions (Java 21, Ubuntu), first green run on 2026-11-16: [CI run](https://github.com/pelzade127/caretrack/actions/runs/44012002892). It was not run in the original generation environment (Maven Central was blocked there).
+- ⏳ **Still to do on a personal machine:** start the backend and frontend together, run `./scripts/api-demo.sh`, retake the screenshots against the real API, and update this section with what you saw.
 
 ## AI assistance disclosure
 
