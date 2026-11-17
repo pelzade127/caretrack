@@ -1,5 +1,7 @@
 # CareTrack: Customer Support Request Tracker
 
+[![CI](https://github.com/pelzade127/caretrack/actions/workflows/ci.yml/badge.svg)](https://github.com/pelzade127/caretrack/actions/workflows/ci.yml)
+
 CareTrack is a small full-stack app for a **fictional** telecom support desk. A customer submits a support request, gets a reference number, and follows its progress. A demo agent works the request: posting customer-visible updates and moving it through a fixed set of statuses, each change explained and recorded in the request's history.
 
 > **Independent portfolio demonstration.** CareTrack is not affiliated with, endorsed by, or based on any real carrier's systems, branding, data, or workflows. Every name, account, and request in it is synthetic. Do not enter real personal information.
@@ -84,6 +86,8 @@ The Vite dev server forwards every `/api/...` call to port 8080, so the browser 
 or open `api-examples.http` in VS Code (REST Client extension) or IntelliJ and click "Send request".
 
 ## Test it
+
+GitHub Actions (`.github/workflows/ci.yml`) runs the backend tests and the frontend build on every push to `main` and on every pull request. The badge at the top shows the latest result. To run the same checks locally:
 
 ```bash
 cd caretrack/backend
